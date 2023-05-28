@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React, { useContext, useEffect, useState } from "react";
 import Form, { InputProps } from "../Form/Form";
 import {
@@ -8,7 +8,7 @@ import {
 import Title from "@/app/components/Title/Title";
 import Divider from "@/app/components/Divider/Divider";
 import FooterForm from "../FooterForm/FooterForm";
-import { AuthContext } from "../../context/useAuthContext";
+import { AuthContext } from "../../context/authContext";
 import AuthProviders from "../AuthProviders/AuthProviders";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -37,14 +37,13 @@ const SignInContainer: React.FC<SignInContainerProps> = ({ toggleVariant }) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (session?.status === 'authenticated') {
-      router.push('/conversations')
+    if (session?.status === "authenticated") {
+      router.push("/conversations");
     }
   }, [session?.status, router]);
 
-  
-  const {signIn} = useContext(AuthContext)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const { signIn } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const handleSubmit = (user: SignIn) => {
     signIn(user, setIsLoading);
   };

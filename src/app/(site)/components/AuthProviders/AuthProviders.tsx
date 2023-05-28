@@ -2,7 +2,7 @@
 import React, { useContext } from "react";
 import SocialIconButton from "../SocialIconButton/SocialIconButton";
 import { BsGithub, BsGoogle } from "react-icons/bs";
-import { AuthContext } from "../../context/useAuthContext";
+import { AuthContext } from "../../context/authContext";
 interface AuthProvidersProps {
   setLoading: (state: boolean) => void;
 }

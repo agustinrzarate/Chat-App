@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import React, { useContext, useState } from "react";
 import Form, { InputProps } from "../Form/Form";
@@ -9,7 +9,7 @@ import {
 import Divider from "@/app/components/Divider/Divider";
 import Title from "@/app/components/Title/Title";
 import FooterForm from "../FooterForm/FooterForm";
-import { AuthContext } from "../../context/useAuthContext";
+import { AuthContext } from "../../context/authContext";
 import AuthProviders from "../AuthProviders/AuthProviders";
 
 interface SignUpContainerProps {
@@ -38,8 +38,8 @@ const SignUpContainer: React.FC<SignUpContainerProps> = ({ toggleVariant }) => {
     },
   };
 
-  const {signUp} = useContext(AuthContext)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const { signUp } = useContext(AuthContext);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const handleSubmit = (user: SignUp) => {
     signUp(user, setIsLoading);
   };
