@@ -7,11 +7,10 @@ import {
   initialStateSignUp,
 } from "../../../../modules/Auth/domain/Auth";
 import Divider from "@/app/components/Divider/Divider";
-import SocialIconButton from "../SocialIconButton/SocialIconButton";
-import { BsGithub, BsGoogle } from "react-icons/bs";
 import Title from "@/app/components/Title/Title";
 import FooterForm from "../FooterForm/FooterForm";
 import { AuthContext } from "../../context/useAuthContext";
+import AuthProviders from "../AuthProviders/AuthProviders";
 
 interface SignUpContainerProps {
   toggleVariant: () => void;
@@ -49,14 +48,7 @@ const SignUpContainer: React.FC<SignUpContainerProps> = ({ toggleVariant }) => {
     <>
       <Title title="Join Chat app today" />
       <div className="mt-7">
-        <div className="flex justify-center">
-          <div className="m-2">
-            <SocialIconButton icon={BsGithub} onClick={() => {}} />
-          </div>
-          <div className="m-2">
-            <SocialIconButton icon={BsGoogle} onClick={() => {}} />
-          </div>
-        </div>
+        <AuthProviders setLoading={setIsLoading} />
         <Divider text="or" />
         <Form<SignUp>
           isLoading={isLoading}

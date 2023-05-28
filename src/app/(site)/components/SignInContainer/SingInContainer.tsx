@@ -1,5 +1,5 @@
 'use client'
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Form, { InputProps } from "../Form/Form";
 import {
   SignIn,
@@ -7,10 +7,11 @@ import {
 } from "../../../../modules/Auth/domain/Auth";
 import Title from "@/app/components/Title/Title";
 import Divider from "@/app/components/Divider/Divider";
-import SocialIconButton from "../SocialIconButton/SocialIconButton";
-import { BsGithub, BsGoogle } from "react-icons/bs";
 import FooterForm from "../FooterForm/FooterForm";
 import { AuthContext } from "../../context/useAuthContext";
+import AuthProviders from "../AuthProviders/AuthProviders";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 interface SignInContainerProps {
   toggleVariant: () => void;
@@ -32,7 +33,16 @@ const SignInContainer: React.FC<SignInContainerProps> = ({ toggleVariant }) => {
       placeholder: "aE;32s,3",
     },
   };
+  const session = useSession();
+  const router = useRouter();
 
+  useEffect(() => {
+    if (session?.status === 'authenticated') {
+      router.push('/conversations')
+    }
+  }, [session?.status, router]);
+
+  
   const {signIn} = useContext(AuthContext)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const handleSubmit = (user: SignIn) => {
@@ -43,14 +53,7 @@ const SignInContainer: React.FC<SignInContainerProps> = ({ toggleVariant }) => {
     <>
       <Title title=" Sign in to your account" />
       <div className="mt-7">
-        <div className="flex justify-center">
-          <div className="m-2">
-            <SocialIconButton icon={BsGithub} onClick={() => {}} />
-          </div>
-          <div className="m-2">
-            <SocialIconButton icon={BsGoogle} onClick={() => {}} />
-          </div>
-        </div>
+        <AuthProviders setLoading={setIsLoading} />
         <Divider text="or" />
         <Form<SignIn>
           isLoading={isLoading}
