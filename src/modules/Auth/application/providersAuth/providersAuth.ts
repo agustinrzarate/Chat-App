@@ -1,12 +1,12 @@
 
+import { SignInResponse } from "next-auth/react";
 import { AuthRepository, Provider } from "../../domain/AuthRepository";
 
-function providersAuth(
+function providersAuthUser(
   registerRepository: AuthRepository,
   provider: Provider,
-  setLoading: (state: boolean) => void
-): void {
-  registerRepository.providersAuth(provider, setLoading);
+): Promise<SignInResponse> {
+  return registerRepository.providersAuth(provider);
 }
 
-export default providersAuth;
+export default providersAuthUser;

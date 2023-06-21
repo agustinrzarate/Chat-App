@@ -4,33 +4,28 @@ import { PropsWithChildren, createContext } from "react";
 import { AuthRepository, Provider } from "@/modules/Auth/domain/AuthRepository";
 import signInUser from "@/modules/Auth/application/signIn/signInUser";
 import registerUser from "@/modules/Auth/application/signUp/registerUser";
-import providersAuth from "@/modules/Auth/application/providersAuth/providersAuth";
-export interface Auth {
-  signIn: (user: SignIn, setLoading: (state: boolean) => void) => void;
-  signUp: (user: SignUp, setLoading: (state: boolean) => void) => void;
-  provider: (provider: Provider, setLoading: (state: boolean) => void) => void;
-}
+import providersAuthUser  from "@/modules/Auth/application/providersAuth/providersAuth";
 
-export const AuthContext = createContext({} as Auth);
+export const AuthContext = createContext({} as AuthRepository);
 
 export const AuthContextProvider = ({
   repository,
   children,
 }: PropsWithChildren<{ repository: AuthRepository }>) => {
-  function signIn(user: SignIn, setLoading: (state: boolean) => void) {
-    signInUser(repository, user, setLoading);
+  function signIn(user: SignIn) {
+    return signInUser(repository, user);
   }
 
-  function provider(provider: Provider, setLoading: (state: boolean) => void) {
-    providersAuth(repository, provider, setLoading);
+  function providersAuth(provider: Provider) {
+    return providersAuthUser(repository, provider);
   }
 
-  function signUp(user: SignUp, setLoading: (state: boolean) => void) {
-    registerUser(repository, user, setLoading);
+  function signUp(user: SignUp) {
+    return registerUser(repository, user);
   }
 
   return (
-      <AuthContext.Provider value={{ signIn, signUp, provider }}>
+      <AuthContext.Provider value={{ signIn, signUp, providersAuth }}>
         {children}
       </AuthContext.Provider>
   );

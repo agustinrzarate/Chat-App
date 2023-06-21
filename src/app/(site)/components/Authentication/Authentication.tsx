@@ -2,9 +2,9 @@
 
 import React, { useCallback, useState } from "react";
 
-import { Auth, initialStateSignIn } from "../../../../modules/Auth/domain/Auth";
-import SingInContainer from "../SignInContainer/SingInContainer";
-import SingUpContainer from "../SignUpContainer/SignUpContainer";
+import { Auth } from "../../../../modules/Auth/domain/Auth";
+import SingInContainer from "./SignInContainer/SingInContainer";
+import SingUpContainer from "./SignUpContainer/SignUpContainer";
 
 const Authentication = () => {
   const [authType, setAuthType] = useState<Auth>("SIGN_UP");

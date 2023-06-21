@@ -1,16 +1,17 @@
 "use client";
 
 import React, { useContext, useState } from "react";
-import Form, { InputProps } from "../Form/Form";
+import Form, { InputProps } from "../../Form/Form";
 import {
   SignUp,
   initialStateSignUp,
-} from "../../../../modules/Auth/domain/Auth";
+} from "../../../../../modules/Auth/domain/Auth";
 import Divider from "@/app/components/Divider/Divider";
 import Title from "@/app/components/Title/Title";
-import FooterForm from "../FooterForm/FooterForm";
-import { AuthContext } from "../../context/authContext";
+import FooterForm from "../../FooterForm/FooterForm";
+import { AuthContext } from "../../../context/authContext";
 import AuthProviders from "../AuthProviders/AuthProviders";
+import toast from "react-hot-toast";
 
 interface SignUpContainerProps {
   toggleVariant: () => void;
@@ -38,10 +39,22 @@ const SignUpContainer: React.FC<SignUpContainerProps> = ({ toggleVariant }) => {
     },
   };
 
-  const { signUp } = useContext(AuthContext);
+  const { signUp, signIn } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const handleSubmit = (user: SignUp) => {
-    signUp(user, setIsLoading);
+
+  const handleSubmit = async (user: SignUp) => {
+    try {
+      setIsLoading(true);
+      await signUp(user);
+      await signIn({
+        email: user.email,
+        password: user.password,
+      });
+    } catch (error: any) {
+      toast.error(error.response.data);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

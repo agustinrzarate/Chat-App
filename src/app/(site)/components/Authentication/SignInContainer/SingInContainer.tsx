@@ -1,17 +1,18 @@
 "use client";
 import React, { useContext, useEffect, useState } from "react";
-import Form, { InputProps } from "../Form/Form";
+import Form, { InputProps } from "../../Form/Form";
 import {
   SignIn,
   initialStateSignIn,
-} from "../../../../modules/Auth/domain/Auth";
+} from "../../../../../modules/Auth/domain/Auth";
 import Title from "@/app/components/Title/Title";
 import Divider from "@/app/components/Divider/Divider";
-import FooterForm from "../FooterForm/FooterForm";
-import { AuthContext } from "../../context/authContext";
+import FooterForm from "../../FooterForm/FooterForm";
+import { AuthContext } from "../../../context/authContext";
 import AuthProviders from "../AuthProviders/AuthProviders";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 interface SignInContainerProps {
   toggleVariant: () => void;
@@ -44,8 +45,22 @@ const SignInContainer: React.FC<SignInContainerProps> = ({ toggleVariant }) => {
 
   const { signIn } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const handleSubmit = (user: SignIn) => {
-    signIn(user, setIsLoading);
+    try {
+      setIsLoading(true);
+      signIn(user).then((callback) => {
+        if (callback?.error) {
+          toast.error("Invalid credentials");
+        } else if (callback?.ok && !callback.error) {
+          toast.success("Logged in!");
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

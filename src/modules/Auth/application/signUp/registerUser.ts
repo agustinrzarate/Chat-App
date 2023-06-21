@@ -1,12 +1,11 @@
 import { SignUp } from "../../domain/Auth";
 import { AuthRepository } from "../../domain/AuthRepository";
 
-function registerUser(
+async function registerUser(
   registerRepository: AuthRepository,
   user: SignUp,
-  setLoading: (state: boolean) => void
-): void {
-  registerRepository.signUp(user, setLoading);
+): Promise<any> {
+  return registerRepository.signUp(user);
 }
 
 export default registerUser;

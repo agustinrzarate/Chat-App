@@ -1,39 +1,24 @@
 import axios from "axios";
 import { SignIn, SignUp } from "../domain/Auth";
 import { AuthRepository, Provider } from "../domain/AuthRepository";
-import { toast } from 'react-hot-toast'
-import { signIn as signInNextAuth} from 'next-auth/react'
+import { SignInResponse, signIn as signInNextAuth} from 'next-auth/react'
 
-function signUp(data: SignUp, setLoading: (state: boolean) => void) {
-  setLoading(true)
-  axios.post("/api/register", data).catch((error) => toast.error(error.response.data)).finally( () => setLoading(false));
+async function signUp(data: SignUp) {
+  const result = await axios.post("/api/register", data)
+  return result.data
 }
 
-function signIn(data: SignIn, setLoading: (state: boolean) => void) {
-  setLoading(true);
-  signInNextAuth('credentials', {
+async function signIn(data: SignIn) {
+ return signInNextAuth('credentials', {
     ...data,
     redirect: false
-  }).then((callback) => {
-    if(callback?.error) {
-      toast.error("Invalid credentials")
-    } else if (callback?.ok && !callback.error) {
-      toast.success('Logged in!')
-    }
-  }).finally( () => setLoading(false))
+  }) as Promise<SignInResponse>
 }
 
-function providersAuth(provider: Provider, setLoading: (state: boolean) => void) {
-  setLoading(true);
-  signInNextAuth(provider, {
+async function providersAuth(provider: Provider) {
+  return signInNextAuth(provider, {
     redirect: false
-  }).then((callback) => {
-    if(callback?.error) {
-      toast.error("Invalid credentials")
-    } else if (callback?.ok && !callback.error) {
-      toast.success('Logged in!')
-    }
-  }).finally( () => setLoading(false))
+  }) as Promise<SignInResponse>
 }
 
 export function authRepository(): AuthRepository {
